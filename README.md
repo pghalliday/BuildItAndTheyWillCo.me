@@ -6,14 +6,13 @@ Let's build something that has no purpose except to be built and document the jo
 Prerequisites
 -------------
 
-- Sign up for enterprise chef
+- Sign up for [Enterprise Chef](https://www.opscode.com/)
 - Create an organization
 - Download the organization validator key file and place in `.chef`
 - Download the organization 'knife.rb' file and place in `.chef`
 - Download your user key file and place in `.chef`
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 - [Vagrant](http://downloads.vagrantup.com/)
-- [XQuartz](http://xquartz.macosforge.org/landing/) (on OSX) for X11 forwarding
 - The Vagrant bindler plugin
 
 ```
