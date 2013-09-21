@@ -14,4 +14,10 @@ Done
 Todo
 ----
 
-- ?
+- Create email address
+- Sign up for AWS free tier
+- Automate deployment
+  - Create recipes to deploy to EC2
+  - Automate DNS configuration
+  - Deploy some blogging software
+    - Wordpress?
