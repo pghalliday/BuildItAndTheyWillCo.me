@@ -7,6 +7,7 @@ Done
 ----
 
 - Registered Domain Name
+- Blogged about my intent
 - Created GitHub Repository
 - Started Todo list
 
