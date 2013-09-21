@@ -14,8 +14,8 @@ Done
 Todo
 ----
 
-- Create email address
-- Sign up for AWS free tier
+- Configure a new organization in chef enterprise
+- Migrate to amazon route 53 for DNS management
 - Automate deployment
   - Create recipes to deploy to EC2
   - Automate DNS configuration
