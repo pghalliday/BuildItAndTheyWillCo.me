@@ -11,6 +11,7 @@ Prerequisites
 - Download the organization validator key file and place in `.chef`
 - Download the organization `knife.rb` file and place in `.chef`
 - Download your user key file and place in `.chef`
+- Create a Route53 zone for the domain
 - Create an EC2 key pair called `chef-EC2` and download `chef-EC2.pem`
 - Place the `chef-EC2.pem` key file in `.chef`
 - Create an IAM user and download the access key ID and secret access key
@@ -54,46 +55,39 @@ bundle exec berks
 bundle exec berks upload
 ```
 
-Upload the local cookbooks
-
-```
-knife cookbook upload my_app
-```
-
 Upload the roles
 
 ```
-knife role from file roles/memcached.rb
-knife role from file roles/redis.rb
-knife role from file roles/my_app.rb
+knife role from file roles/builditandtheywillcome.rb
 ```
 
-Create the EC2 servers (we use bundle exec so that ruby can find the EC2 plugin).
+Create a data bag for AWS Route 53 access keys
+
+```
+knife data bag create route53 access
+```
+
+When prompted add the following data item
+
+```json
+{
+  "id": "access",
+  "zone_id": "ZONE_ID",
+  "aws_access_key_id": "ACCESS_KEY_ID",
+  "aws_secret_access_key": "SECRET_ACCESS_KEY"
+}
+```
+
+Create the EC2 server (we use bundle exec so that ruby can find the EC2 plugin).
 
 ```
 bundle exec knife ec2 server create \
   --availability-zone us-east-1c \
-  --node-name memcached.builditandtheywillco.me \
+  --node-name wordpress.builditandtheywillco.me \
   --flavor t1.micro \
   --image ami-fd20ad94 \
   --identity-file .chef/chef-EC2.pem \
-  --run-list "role[memcached]" \
-  --ssh-user ubuntu
-bundle exec knife ec2 server create \
-  --availability-zone us-east-1c \
-  --node-name redis.builditandtheywillco.me \
-  --flavor t1.micro \
-  --image ami-fd20ad94 \
-  --identity-file .chef/chef-EC2.pem \
-  --run-list "role[redis]" \
-  --ssh-user ubuntu
-bundle exec knife ec2 server create \
-  --availability-zone us-east-1c \
-  --node-name my_app.builditandtheywillco.me \
-  --flavor t1.micro \
-  --image ami-fd20ad94 \
-  --identity-file .chef/chef-EC2.pem \
-  --run-list "role[my_app]" \
+  --run-list "role[builditandtheywillcome]" \
   --ssh-user ubuntu
 ```
 
