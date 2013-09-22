@@ -9,8 +9,21 @@ Prerequisites
 - Sign up for [Enterprise Chef](https://www.opscode.com/)
 - Create an organization
 - Download the organization validator key file and place in `.chef`
-- Download the organization 'knife.rb' file and place in `.chef`
+- Download the organization `knife.rb` file and place in `.chef`
 - Download your user key file and place in `.chef`
+- Create an EC2 key pair called `chef-EC2` and download `chef-EC2.pem`
+- Place the `chef-EC2.pem` key file in `.chef`
+- Create an IAM user and download the access key ID and secret access key
+- Configure the AWS and EC2 parameters in `knife.rb`
+
+```ruby
+# knife.rb
+
+knife[:aws_access_key_id] = 'ACCESS_KEY_ID'
+knife[:aws_ssh_key_id] = 'chef-EC2'
+knife[:aws_secret_access_key] = 'SECRET_ACCESS_KEY'
+```
+
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 - [Vagrant](http://downloads.vagrantup.com/)
 - The Vagrant bindler plugin
@@ -23,14 +36,6 @@ vagrant bindler setup
 Usage
 -----
 
-Start a test node to converge
-
-```
-vagrant up
-```
-
-The node will be started with a host only IP address 192.168.50.101.
-
 Create a knife environment using Vagrant from the `knife` directory.
 
 ```
@@ -40,17 +45,56 @@ vagrant up
 vagrant ssh
 ```
 
-The knife VM will be started with a host only IP address 192.168.50.100.
-
-Converge the test node on IP 192.168.50.101.
+Install Berkshelf and the EC2 plugin, download the community cookbooks and upload them to the server.
 
 ```
 cd /chef-repo
-knife bootstrap 192.168.50.101 \
-  --ssh-user vagrant \
-  --ssh-password vagrant \
-  --run-list "recipe[apt],recipe[aliases],recipe[apache2]" \
-  --sudo
+bundle install
+bundle exec berks
+bundle exec berks upload
+```
+
+Upload the local cookbooks
+
+```
+knife cookbook upload my_app
+```
+
+Upload the roles
+
+```
+knife role from file roles/memcached.rb
+knife role from file roles/redis.rb
+knife role from file roles/my_app.rb
+```
+
+Create the EC2 servers (we use bundle exec so that ruby can find the EC2 plugin).
+
+```
+bundle exec knife ec2 server create \
+  --availability-zone us-east-1c \
+  --node-name memcached.builditandtheywillco.me \
+  --flavor t1.micro \
+  --image ami-fd20ad94 \
+  --identity-file .chef/chef-EC2.pem \
+  --run-list "role[memcached]" \
+  --ssh-user ubuntu
+bundle exec knife ec2 server create \
+  --availability-zone us-east-1c \
+  --node-name redis.builditandtheywillco.me \
+  --flavor t1.micro \
+  --image ami-fd20ad94 \
+  --identity-file .chef/chef-EC2.pem \
+  --run-list "role[redis]" \
+  --ssh-user ubuntu
+bundle exec knife ec2 server create \
+  --availability-zone us-east-1c \
+  --node-name my_app.builditandtheywillco.me \
+  --flavor t1.micro \
+  --image ami-fd20ad94 \
+  --identity-file .chef/chef-EC2.pem \
+  --run-list "role[my_app]" \
+  --ssh-user ubuntu
 ```
 
 See Vagrant [documentation](http://docs.vagrantup.com/v2/) if you need to know more about Vagrant
@@ -70,10 +114,11 @@ Roadmap
 - Configure a new organization in chef enterprise
   - builditandtheywillcome
 - Set up chef workstation environment with vagrant
+- Integrate with AWS/EC2
 
 ### Todo
 
-- Integrate with AWS/EC2
+- Create recipe for blog?
 - Migrate to amazon route 53 for DNS management
 - Automate deployment
   - Create recipes to deploy to EC2

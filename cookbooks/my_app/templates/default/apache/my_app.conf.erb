@@ -1,0 +1,22 @@
+# This file is managed by chef for <%= node['fqdn'] %>
+# Do NOT modify this file by hand!
+
+<VirtualHost *:80>
+  DocumentRoot <%= node['my_app']['root'] %>/current/public
+
+  <Directory <%= node['my_app']['root'] %>/current/public>
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  LogLevel info
+  ErrorLog <%= node['apache']['log_dir'] %>/my_app-error.log
+  CustomLog <%= node['apache']['log_dir'] %>/my_app-access.log combined
+</VirtualHost>

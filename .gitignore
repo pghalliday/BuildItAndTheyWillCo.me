@@ -3,3 +3,6 @@
 knife.rb
 .vagrant
 Berksfile.lock
+./vendor
+./.bundle
+Gemfile.lock
