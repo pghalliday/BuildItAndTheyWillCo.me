@@ -23,14 +23,15 @@ vagrant bindler setup
 Usage
 -----
 
-To start a test node to converge
+Start a test node to converge
 
 ```
 vagrant up
 ```
 
-The node will be started with a host only IP address 192.168.50.101
-To create a knife environment using Vagrant from the `knife` directory
+The node will be started with a host only IP address 192.168.50.101.
+
+Create a knife environment using Vagrant from the `knife` directory.
 
 ```
 cd knife
@@ -39,7 +40,9 @@ vagrant up
 vagrant ssh
 ```
 
-The knife VM will be started with a host only IP address 192.168.50.100. It will be possible to converge the test node on IP 192.168.50.101
+The knife VM will be started with a host only IP address 192.168.50.100.
+
+Converge the test node on IP 192.168.50.101.
 
 ```
 cd /chef-repo
