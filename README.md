@@ -20,25 +20,42 @@ vagrant plugin install bindler
 vagrant bindler setup
 ```
 
-- Other vagrant plugins
-
-```
-vagrant plugin bundle
-```
-
 Usage
 -----
 
+To start a test node to converge
+
 ```
+vagrant up
+```
+
+The node will be started with a host only IP address 192.168.50.101
+To create a knife environment using Vagrant from the `knife` directory
+
+```
+cd knife
+vagrant plugin bundle
 vagrant up
 vagrant ssh
 ```
 
+The knife VM will be started with a host only IP address 192.168.50.100. It will be possible to converge the test node on IP 192.168.50.101
+
+```
+cd /chef-repo
+knife bootstrap 192.168.50.101 \
+  --ssh-user vagrant \
+  --ssh-password vagrant \
+  --run-list "recipe[apt],recipe[aliases],recipe[apache2]" \
+  --sudo
+```
+
 See Vagrant [documentation](http://docs.vagrantup.com/v2/) if you need to know more about Vagrant
 
-
-Done
-----
+Roadmap
+-------
+ 
+### Done
 
 - Register Domain Name
   - builditandtheywillco.me
@@ -49,11 +66,11 @@ Done
 - Start Todo list
 - Configure a new organization in chef enterprise
   - builditandtheywillcome
-
-Todo
-----
-
 - Set up chef workstation environment with vagrant
+
+### Todo
+
+- Integrate with AWS/EC2
 - Migrate to amazon route 53 for DNS management
 - Automate deployment
   - Create recipes to deploy to EC2
