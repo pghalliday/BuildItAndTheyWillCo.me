@@ -72,6 +72,7 @@ When prompted add the following data item
 ```json
 {
   "id": "access",
+  "zone_domain": "ZONE_DOMAIN_WITHOUT_TRAILING_DOT",
   "zone_id": "ZONE_ID",
   "aws_access_key_id": "ACCESS_KEY_ID",
   "aws_secret_access_key": "SECRET_ACCESS_KEY"
@@ -109,13 +110,9 @@ Roadmap
   - builditandtheywillcome
 - Set up chef workstation environment with vagrant
 - Integrate with AWS/EC2
+- Create recipe for blog
+- Migrate to amazon route 53 for DNS management
 
 ### Todo
 
-- Create recipe for blog?
-- Migrate to amazon route 53 for DNS management
-- Automate deployment
-  - Create recipes to deploy to EC2
-  - Automate DNS configuration
-  - Deploy some blogging software
-    - Wordpress?
+- Restore blog state on deployment
