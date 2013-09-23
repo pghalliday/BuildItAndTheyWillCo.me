@@ -13,8 +13,8 @@ include_recipe "route53"
 route53_access = search(:route53, "id:access").first
 
 route53_record "create CNAME record" do
-  name  "*"
-  value node[:ec2][:public_hostname]
+  name  "*." + route53_access[:zone_id]
+  value node[:ec2][:public_hostname] + "."
   type  "CNAME"
 
   zone_id               route53_access[:zone_id]
