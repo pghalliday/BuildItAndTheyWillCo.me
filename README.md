@@ -84,7 +84,7 @@ Create the EC2 server (we use bundle exec so that ruby can find the EC2 plugin).
 ```
 bundle exec knife ec2 server create \
   --availability-zone us-east-1c \
-  --node-name wordpress.builditandtheywillco.me \
+  --node-name builditandtheywillco.me \
   --flavor t1.micro \
   --image ami-fd20ad94 \
   --identity-file .chef/chef-EC2.pem \
